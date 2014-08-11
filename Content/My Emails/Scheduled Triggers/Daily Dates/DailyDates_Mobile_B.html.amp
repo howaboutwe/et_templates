@@ -1,0 +1,389 @@
+
+%%[
+
+Var @userID,
+@rows,
+@matchedUserImageURL,
+@matchedUserDate,
+@matchedUserLogin,
+@matchedUserAge,
+@matchedUserGender,
+@matchedUserOrientation,
+@matchedUserCity,
+@matchedUserState,
+@matchedUserLocation,
+@single_access_token,
+@matchedUserProfileURL,
+@site,
+@dayofweek,
+@matchedConcatLocation
+
+set @dayofweek = xtdayofweek
+
+set @userID = userID
+set @site = site
+set @site_url = site_url
+
+var @utm
+set @utm = concat("&utm_source=et_Dating&utm_medium=organic&utm_campaign=dailydates&utm_content=dailydates&utm_term=", _DataSourceName)
+
+var @token
+set @token = concat("?tmp=", single_access_token)
+
+var @cta_link
+set @cta_link = treatascontent(concat(@site_url, @token, @utm))
+]%%
+
+<head>
+	<style type="text/css">
+	@media screen and (max-device-width: 480px) {
+		.mobile_content {
+			display: block !important;
+			width: 640px !important;
+			max-height: inherit !important;
+			overflow: visible !important;
+			float: none !important;
+		} 
+		.nonmobile_content {display: none !important;}  
+	}
+	</style>
+</head>
+
+<!--[if !mso]><!-->
+<div class="mobile_content" style="width: 0; max-height: 0; overflow: hidden; float: left; mso-hide: all;">
+	<table class="mobile_content" style="width: 0; max-height: 0; overflow: hidden; float: left;" align='center'>
+		<tr>
+			<td bgcolor="#39383e">
+				<table width="600" align="center" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td height="20"></td>
+					</tr>
+					<tr>
+						<td>
+							<a href='%%=redirectto(@cta_link)=%%' conversion="true" >
+								<img style="display:block;" border="0" src="http://d1tfguz8xcinml.cloudfront.net/singles/whitelabel/%%site%%.png" alt="%%site_name%%">
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td height="18"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor='#f8f4eb' align='center'>
+				<table border='0' cellpadding='0' cellspacing='0' align='center' width='600'>
+					<tr>
+						<td height='34'></td>
+					</tr>
+					<tr>
+						<td align='center'>
+							<table border='0' cellpadding='0' cellspacing='0' align='center'>
+								<tr>
+									<td><img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/dots-new.png" alt="Login Instantly"></td>
+									<td width="10"></td>
+									<td>
+										<span style="font-family:georgia,serif;font-size:40px;color:#4b484f;">Your Daily Dates</span>
+									</td>
+									<td width="10"></td>
+									<td><img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/dots-new.png" alt="Login Instantly"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td height='34'></td>
+					</tr>
+					%%[
+					set @rows = LookupRows("DailyDates","userID",@userID)
+
+					for @i = 1 to RowCount(@rows) do
+					Set @row = Row(@rows,@i)
+					Set @matchedUserImageURL = Field(@row,"image_url")
+					Set @matchedUserDate = Field(@row,"date_text")  
+					Set @matchedUserLogin = Field(@row,"login")   
+					Set @matchedUserAge = Field(@row,"age")
+					Set @matchedUserGender = Field(@row,"gender")
+					Set @matchedUserOrientation = Field(@row,"orientation")
+					Set @matchedUserCity = Field(@row,"city")
+					Set @matchedUserState = Field(@row,"state")
+					IF (not empty(@matchedUserCity)) and (not empty(@matchedUserState)) THEN
+					set @matchedConcatLocation = concat(@matchedUserCity, ", ", @matchedUserState)
+					endif
+					SET @matchedUserLocation = Field(@row,"location")
+					IF (not empty(@matchedUserLocation)) THEN
+					SET @matchedConcatLocation = @matchedUserLocation
+					endif
+
+					Set @single_access_token = Field(@row,"single_access_token")
+					Set @matchedUserProfileURL = treatascontent(concat(Field(@row,"site_url"),"/users/",@matchedUserLogin,"?tmp=",@single_access_token))
+
+					if length(@matchedUserDate) > 45 THEN
+					set @matchedUserDate = CONCAT(trim(substring(@matchedUserDate, 1, 45)), "...")
+					endif
+					]%%
+
+					<tr>
+						<td align='center'>
+							<table border='0' cellpadding='0' cellspacing='0' align='center' width='580'>
+								<tr>
+									<td align='left' width='279'>
+										<a href='%%=RedirectTo(@matchedUserProfileURL)=%%' conversion='true'>
+											<img src='%%= v(@matchedUserImageURL) =%%' width='279' height='279' style='border-radius:8px;' border='0' alt='%%=v(@matchedUserLogin)=%%'>
+										</a>
+									</td>
+									<td align='right' width='260' valign='center'>
+										<table border='0' cellpadding='0' cellspacing='0' align='left' height='260' width='100%'>
+											<tr>
+												<td align='left' valign='top' height='20'>
+													<img src='http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/howaboutwe-small.png' width='172' height='20'>
+												</td>
+											</tr>
+											<tr>
+												<td height='5'></td>
+											</tr>
+											<tr>
+												<td align='left' valign='top'>
+													<span style="font-family:georgia,serif;font-size:30px;line-height:40px;color:#4b484f;">
+														%%= v(@matchedUserDate) =%%
+													</span>
+												</td>
+											</tr>
+											<tr>
+												<td align='left' valign='bottom' height='60'>
+													<table border='0' cellpadding='0' cellspacing='0' align='center' width='100%'>
+														<tr>
+															<td align='left'>
+																<span style="font-family:georgia,serif;font-size:20px;line-height:25px;color:#afaeb4;">
+																	<i>%%= v(@matchedUserlogin) =%%</i><br/>
+																	%%= v(@matchedUserAge) =%%, %%= substring(@matchedUserGender, 1, 1) =%%, %%= v(@matchedUserOrientation) =%%<br>
+																	%%= v(@matchedConcatLocation) =%%
+																</span>
+															</td>
+															<td align='right'>
+																<a href='%%=RedirectTo(@matchedUserProfileURL)=%%' conversion='true'>
+																	<img src='http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/datecard_arrow_large.png' width='34' height='34' border='0' style='display:block;'>
+																</a>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td height='30'></td>
+					</tr>
+					<tr>
+						<td height='1' bgcolor='#dcd6ca'></td>
+					</tr>
+					<tr>
+						<td height='30'></td>
+					</tr>
+					%%[next @i]%%
+					<tr>
+						<td align='center'>
+							<span style="font-family:georgia,serif;font-size:14px;line-height:18px;color:#afaeb4;">
+								HowAboutWe&#46;com &copy; 2010-%%xtyear%% %%Member_Busname%%, %%Member_Addr%% %%Member_City%%, %%Member_State%% %%Member_PostalCode%%, %%Member_Country%%<br/>
+								You can adjust your email settings or unsubscribe<a href="%%=redirectto(concat(@site_url, '/settings', @token, @utm))=%%" style="color:#666666;text-decoration:none"> here</a>.<br/>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td height='30'></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<!--<![endif]-->
+<div class="nonmobile_content">
+	<table class="nonmobile_content" align="center" border="0" cellpadding="0" cellspacing="0" width="600px" bgcolor="#fdfaf5">
+		<tr>
+			<td bgcolor="#ffffff" height="20px"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#39383e">
+				<table align="center" width="600px" height="46" border="0" cellpadding="0" cellspacing="0">
+					<tr bgcolor="#39383E" height="60">
+						<td width="20"></td>
+						<td>
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										<a href='%%=redirectto(concat(@site_url, @token, @utm))=%%' conversion="true" style="display:block"><img style="display:block;" border="0" src="http://d1tfguz8xcinml.cloudfront.net/singles/whitelabel/%%site%%.png" alt="%%site_name%%"></a>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td align="right">
+							<a href='%%=redirectto(concat(@site_url, @token, @utm))=%%' conversion="true">
+								<img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/logininstantly.png" width="136" height="36" alt="Login Instantly" border="0" style="display:block;">
+							</a>
+						</td>
+						<td width="20"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="31" bgcolor="#fdfaf5"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#fdfaf5" align="center">
+				<table >
+					<tr>
+						<td><img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/dots.jpg" alt="Login Instantly"></td>
+						<td width="10"></td>
+						<td>
+							<span style="font-family:georgia,serif;font-size:30px;color:#4b484f;">Your Daily Dates</span>
+						</td>
+						<td width="10"></td>
+						<td><img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/dots.jpg" alt="Login Instantly"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="20" bgcolor="#fdfaf5"></td>
+		</tr>
+
+		%%[
+		var @username
+		set @username = PROPERCASE(recipient_login)
+		]%%
+
+		<tr>
+			<td align="center">
+				<table cellspacing="7" cellpadding="0">
+					%%[
+					set @rows = LookupRows("DailyDates","userID",@userID)
+
+					for @i = 1 to RowCount(@rows) do
+					Set @row = Row(@rows,@i)
+					Set @matchedUserImageURL = Field(@row,"image_url")
+					Set @matchedUserDate = Field(@row,"date_text")  
+					Set @matchedUserLogin = Field(@row,"login")   
+					Set @matchedUserAge = Field(@row,"age")
+					Set @matchedUserGender = Field(@row,"gender")
+					Set @matchedUserOrientation = Field(@row,"orientation")
+					Set @matchedUserCity = Field(@row,"city")
+					Set @matchedUserState = Field(@row,"state")
+					IF (not empty(@matchedUserCity)) and (not empty(@matchedUserState)) THEN
+					set @matchedConcatLocation = concat(@matchedUserCity, ", ", @matchedUserState)
+					endif
+					SET @matchedUserLocation = Field(@row,"location")
+					IF (not empty(@matchedUserLocation)) THEN
+					SET @matchedConcatLocation = @matchedUserLocation
+					endif
+
+					Set @single_access_token = Field(@row,"single_access_token")
+					Set @matchedUserProfileURL = concat(Field(@row,"site_url"),"/users/",@matchedUserLogin,"?tmp=",@single_access_token)
+
+					if length(@matchedUserDate) > 45 THEN
+					set @matchedUserDate = CONCAT(trim(substring(@matchedUserDate, 1, 45)), "...")
+					endif
+
+					IF(Mod(@i, 3) == 1 )THEN
+
+					Set @tdAlignment = "left"
+
+					ELSEIF(Mod(@i, 3) == 2)THEN 
+
+					Set @tdAlignment = "center"
+
+					ELSE 
+
+					Set @tdAlignment = "right"
+
+					ENDIF ]%%
+					%%[IF (MOD(@i, 3) == 1) THEN]%%
+					<tr>
+						%%[ENDIF]%%
+
+						<td width="180" height="350" bgcolor="#ffffff" style="border: 1px solid #d6d8d8" align="center" valign="top">
+							<table style="margin:6px" height="330">
+								<tr>
+									<td width="160" height="160" valign="top" align="center">
+										<a href="%%=RedirectTo(@matchedUserProfileURL)=%%" conversion="true">
+											<img src="%%= v(@matchedUserImageURL) =%%" width="160" height="160" border="0" style="display:block;" alt="%%=v(@matchedUserLogin)=%%">
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td height="5" valign="top"></td>
+								</tr>
+								<tr>
+									<td align="center" valign="top" height="150">
+										<table cellspacing="0" cellpadding="0" border="0" width="142" height="150">
+											<tr>
+												<td valign="top" height="16">
+													<a href="%%=RedirectTo(@matchedUserProfileURL)=%%" conversion="true">
+														<img src="http://howaboutwe-despark.s3.amazonaws.com/dating_upgrade/ctitle.jpg" width="116" height="16" border="0" style="display:block;" alt="How About We...">
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td style="font-family:Georgia,serif;font-size:15px;line-height:21px;color:#4b484f" valign="top">
+													%%= v(@matchedUserDate) =%%
+												</td>
+											</tr>
+											<tr>
+												<td style="font-family:Georgia,serif;font-size:13px;color:#afaeb4" valign="bottom" height="50">
+													<table cellspacing="0" cellpadding="0" border="0" width="100%">
+														<tr>
+															<td style="font-family:Georgia,serif;font-size:13px;line-height:18px;color:#afaeb4">
+																<i>%%= v(@matchedUserlogin) =%%</i><br>
+																%%= v(@matchedUserAge) =%%, %%= substring(@matchedUserGender, 1, 1) =%%, %%= v(@matchedUserOrientation) =%%<br>
+																%%= v(@matchedConcatLocation) =%%
+															</td>
+															<td valign="bottom" width="20">
+																<a href="%%=RedirectTo(@matchedUserProfileURL)=%%" conversion="true">
+																	<img src="http://d1tfguz8xcinml.cloudfront.net/singles/dailydates/datecard_arrow.png" alt="Login Instantly" border="0" style="display:block;">
+																</a>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+						%%[IF (MOD(@i, 3) == 0) THEN]%%
+					</tr>
+					<tr>
+						<td colspan="3" height="6"></td>
+					</tr>
+					%%[ENDIF]%%
+					%%[ NEXT @i]%%
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="30"></td>
+		</tr>
+		<tr>
+			<td height="10" bgcolor="#ffffff"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#ffffff">
+				<p style="margin:0;text-align:center;font-family:georgia,serif;line-height:1.5;font-size:12px;color:#888690;">
+					HowAboutWe&#46;com &copy; 2010-%%xtyear%% %%Member_Busname%%, %%Member_Addr%% %%Member_City%%, %%Member_State%% %%Member_PostalCode%%, %%Member_Country%%
+				</p>
+				<p style="margin:0;text-align:center;font-family:georgia,serif;line-height:1.5;font-size:11px;color:#888690;">
+					You can adjust your email settings or unsubscribe<a href="%%=redirectto(concat(@site_url, '/settings', @token, @utm))=%%" style="color:#666;text-decoration:none"> here</a>.
+				</p>
+			</td>
+		</tr>
+	</table>
+</div>
+<img src="%%imp_url%%" border="0" style="display:block;">
+<custom name="opencounter" type="tracking">
