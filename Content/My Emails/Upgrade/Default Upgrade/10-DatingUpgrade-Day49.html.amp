@@ -1,0 +1,89 @@
+%%[
+
+var @token, @promo, @utm, @terms
+set @token = concat("?tmp=", single_access_token)
+set @promo = "&promo=50-percent-off-upgrade"
+set @utm = concat("&utm_source=et_Dating&utm_medium=organic&utm_campaign=dating_upgrade_flow&utm_content=dating_upgrade_flow&utm_term=", _DataSourceName)
+set @terms = ""
+
+var @cta_link
+set @cta_link = concat(site_url, "/subscribe", @token, @promo, @utm)
+
+var @alt_text
+set @alt_text = "Get half off! Upgrade to full membership today and get everything we have to offer for 50% less."
+
+]%%
+
+<!doctype html>
+<html>
+<head>
+	<title>HowAboutWe</title>
+	<meta charset="utf-8"/>
+</head>
+<body style="margin:0;">
+	<table align="center" border="0" cellpadding="0" cellspacing="0" width="600px" bgcolor="#ffffff">
+		<tr>
+			<td bgcolor="#ffffff" height="20px"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#222222" height="3px"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#f7f7f7">
+				<table align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#f7f7f7">
+					<tr>
+						<td height="60"></td>
+					</tr>
+					<tr>
+						<td align="center">
+							<a href='%%=redirectto(@cta_link)=%%' conversion="true" >
+								<img style="display:block;" border="0" src="http://d1tfguz8xcinml.cloudfront.net/singles/whitelabel/light-bg/%%site%%.png" alt="%%site_name%%">
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td height="60"></td>
+					</tr>
+					<tr>
+						<td>
+							<a href='%%=redirectto(@cta_link)=%%' conversion="true">
+								<img src='http://d1tfguz8xcinml.cloudfront.net/singles/upgrade/new/10-upgrade-day49.png' border="0" alt='%%=v(@alt_text)=%%'>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td height="60"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#222222" height="3px"></td>
+		</tr>
+		<tr>
+			<td>
+				<a href='%%=redirectto(@cta_link)=%%' conversion="true">
+					<img src='http://d1tfguz8xcinml.cloudfront.net/singles/footers/footer_light.gif' border="0" alt='The Offline Dating Site' style='display:block;'>
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td height="10" bgcolor="#ffffff"></td>
+		</tr>
+		<tr>
+			<td bgcolor="#ffffff">
+				<p style="margin:0;text-align:center;font-family:arial, sans-serif;line-height:1.5;font-size:12px;color:#888690;">
+					%%=v(@terms)=%%
+				</p>
+				<p style="margin:0;text-align:center;font-family:arial, sans-serif;line-height:1.5;font-size:12px;color:#888690;">
+					HowAboutWe&#46;com &copy; 2010-%%xtyear%% %%Member_Busname%%, %%Member_Addr%% %%Member_City%%, %%Member_State%% %%Member_PostalCode%%, %%Member_Country%%
+				</p>
+				<p style="margin:0;text-align:center;font-family:arial, sans-serif;line-height:1.5;font-size:11px;color:#888690;">
+					If you believe this has been sent to you in error, please safely <a href="%%site_url%%/settings?tmp=%%single_access_token%%" style="color:#666;text-decoration:none">unsubscribe</a>.
+				</p>
+			</td>
+		</tr>
+	</table>
+	<custom name="opencounter" type="tracking">
+</body>
+</html>
