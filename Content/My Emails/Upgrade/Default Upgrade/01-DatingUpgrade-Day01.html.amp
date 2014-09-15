@@ -40,7 +40,8 @@ set @alt_text = "Membership means unlimited messaging, someone's-checking-you-ou
 					<tr>
 						<td align="center">
 							<a href='%%=redirectto(@cta_link)=%%' conversion="true" >
-								<img style="display:block;" border="0" src="http://d1tfguz8xcinml.cloudfront.net/singles/whitelabel/light-bg/%%site%%.png" alt="%%site_name%%"></a>
+								<img style="display:block;" border="0" src="http://d1tfguz8xcinml.cloudfront.net/singles/whitelabel/light-bg/%%site%%.png" alt="%%site_name%%">
+							</a>
 						</td>
 					</tr>
 					<tr>
@@ -56,7 +57,7 @@ set @alt_text = "Membership means unlimited messaging, someone's-checking-you-ou
 				</a>
 			</td>
 		</tr>
-<tr>
+		<tr>
 			<td>
 				<a href='%%=redirectto(@cta_link)=%%' conversion="true">
 					<img src='http://d1tfguz8xcinml.cloudfront.net/singles/footers/footer_light.gif' border="0" alt='%%=v(@alt_text)=%%'>
@@ -80,6 +81,10 @@ set @alt_text = "Membership means unlimited messaging, someone's-checking-you-ou
 			</td>
 		</tr>
 	</table>
-	<custom name="opencounter" type="tracking">
+	<custom name="opencounter" type="tracking"></custom>
+
+	<!-- SnowPlow start plowing -->
+	<img src="https://d1663cp6879lbv.cloudfront.net/i?&e=pv&page=01-DatingUpgrade-Day01-open&aid=dating&p=email&tv=no-js-0.1.0" />
+	<!-- SnowPlow stop plowing -->
 </body>
 </html>
